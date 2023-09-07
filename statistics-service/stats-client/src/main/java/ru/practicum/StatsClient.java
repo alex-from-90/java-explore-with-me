@@ -30,6 +30,7 @@ public class StatsClient {
                 .toEntityList(ViewStatsDto.class)
                 .block();
     }
+
     public void addHit(EndpointHitDto endpointHitDto) {
         client.post()
                 .uri("/hit")
