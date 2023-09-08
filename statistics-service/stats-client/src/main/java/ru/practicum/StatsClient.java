@@ -11,8 +11,8 @@ import java.util.List;
 public class StatsClient {
     private final WebClient client;
 
-    public StatsClient(String SERVER_URL) {
-        client = WebClient.create(SERVER_URL);
+    public StatsClient(String serverUrl) {
+        client = WebClient.create(serverUrl);
     }
 
     public ResponseEntity<List<ViewStatsDto>> getStats(String start, String end, String[] uris, Boolean unique) {
