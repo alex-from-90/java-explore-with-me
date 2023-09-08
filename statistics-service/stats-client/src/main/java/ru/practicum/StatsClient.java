@@ -9,10 +9,9 @@ import java.util.List;
 
 @Service
 public class StatsClient {
-    private static final String SERVER_URL = "http://localhost:9090";
     private final WebClient client;
 
-    public StatsClient() {
+    public StatsClient(String SERVER_URL) {
         client = WebClient.create(SERVER_URL);
     }
 

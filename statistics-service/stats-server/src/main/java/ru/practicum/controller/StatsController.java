@@ -24,7 +24,7 @@ public class StatsController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createHit(@Valid @RequestBody EndpointHitDto endpointHitDto) {
         log.info("Получен post запрос на сохранение информации : {}", endpointHitDto);
-        statsService.addHit(endpointHitDto);
+        statsService.createHit(endpointHitDto);
     }
 
     @GetMapping("/stats")
