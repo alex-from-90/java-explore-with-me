@@ -13,17 +13,15 @@ import ru.practicum.mainservice.dto.filter.PageFilterDTO;
 import ru.practicum.mainservice.dto.request.RequestDTO;
 import ru.practicum.mainservice.dto.request.UpdateRequestDTO;
 import ru.practicum.mainservice.enums.StatusRequest;
-import ru.practicum.mainservice.mapper.EventMapper;
-import ru.practicum.mainservice.mapper.RequestMapper;
-import ru.practicum.mainservice.model.Event;
-import ru.practicum.mainservice.model.Request;
 import ru.practicum.mainservice.service.EventService;
 import ru.practicum.mainservice.service.RequestService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -35,35 +33,30 @@ public class UserEventController {
 
     private final EventService eventService;
     private final RequestService requestService;
-    private final EventMapper eventMapper;
-    private final RequestMapper requestMapper;
 
     @GetMapping
     public List<ShortEventDTO> getEvents(@PathVariable @PositiveOrZero int userId, @Valid PageFilterDTO pageableData) {
         log.info("Запрос на получение событий пользователя id={} pageable={}", userId, pageableData);
-        List<Event> events = eventService.getAll(userId, pageableData.getFrom(), pageableData.getSize());
+        List<ShortEventDTO> events = eventService.getAll(userId, pageableData.getFrom(), pageableData.getSize());
         log.info("Найдено {} событий для id={} pageable={}", events.size(), userId, pageableData);
-        return events.stream().map(eventMapper::toShortDto).collect(Collectors.toList());
+        return events;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventDTO createEvent(@PathVariable @PositiveOrZero int userId, @RequestBody @Valid CreateEventDTO dto) {
         log.info("Получен запрос на создание мероприятия userId={} data={}", userId, dto);
-        Event event = eventMapper.toModel(dto);
-        event = eventService.createEvent(userId, dto.getCategory(), event);
+        EventDTO event = eventService.createEvent(userId, dto);
         log.info("Мероприятие {} успешно создано", event);
-        return eventMapper.toDto(event, 0, 0);
+        return event;
     }
 
     @GetMapping("/{eventId}")
     public EventDTO getUserEventById(@PathVariable @PositiveOrZero int userId, @PathVariable @PositiveOrZero int eventId) {
         log.info("Запрос на получение события eventId={}, userId={}", eventId, userId);
-        Event event = eventService.getByInitiatorAndId(userId, eventId);
+        EventDTO event = eventService.getByInitiatorAndId(userId, eventId);
         log.info("Событие по запросу eventId={}, userId={} = {}", eventId, userId, event);
-        Map<Integer, Integer> views = eventService.getViews(Collections.singletonList(event));
-        Map<Integer, Integer> confirmedRequests = eventService.getConfirmedRequests(Collections.singletonList(event));
-        return eventMapper.toDto(event, views.getOrDefault(eventId, 0), confirmedRequests.getOrDefault(eventId, 0));
+        return event;
     }
 
     @PatchMapping("/{eventId}")
@@ -73,13 +66,9 @@ public class UserEventController {
             @RequestBody @Valid UpdateEventDTO dto
     ) {
         log.info("Запрос на редактирование события eventId={}, userId={}, data={}", eventId, userId, dto);
-        Event event = eventMapper.toModel(dto);
-        event.setId(eventId);
-        event = eventService.updateEvent(userId, dto.getCategory(), event, dto.getStateAction());
+        EventDTO event = eventService.updateEvent(userId, eventId, dto);
         log.info("Событие eventId={}, userId={} успешно отредактировано data={}", eventId, userId, event);
-        Map<Integer, Integer> views = eventService.getViews(Collections.singletonList(event));
-        Map<Integer, Integer> confirmedRequests = eventService.getConfirmedRequests(Collections.singletonList(event));
-        return eventMapper.toDto(event, views.getOrDefault(eventId, 0), confirmedRequests.getOrDefault(eventId, 0));
+        return event;
     }
 
     @GetMapping("/{eventId}/requests")
@@ -88,9 +77,9 @@ public class UserEventController {
             @PathVariable @PositiveOrZero int eventId
     ) {
         log.info("Получен запрос на получение списка заявок userId={}, eventId={}", userId, eventId);
-        List<Request> requests = requestService.getUserEventRequests(userId, eventId);
+        List<RequestDTO> requests = requestService.getUserEventRequests(userId, eventId);
         log.info("Найдено запросов {} userId={}, eventId={}", requests.size(), userId, eventId);
-        return requests.stream().map(requestMapper::toDto).collect(Collectors.toList());
+        return requests;
     }
 
     @PatchMapping("/{eventId}/requests")
@@ -100,15 +89,15 @@ public class UserEventController {
             @RequestBody @Valid UpdateRequestDTO dto
     ) {
         log.info("Получен запрос на обновление заявок userId={}, eventId={}, data={}", userId, eventId, dto);
-        List<Request> requests = requestService.updateRequests(userId, eventId, dto.getRequestIds(), dto.getStatus());
+        List<RequestDTO> requests = requestService.updateRequests(userId, eventId, dto);
         Map<String, List<RequestDTO>> result = new HashMap<>(4);
-        for (Request request : requests) {
+        for (RequestDTO request : requests) {
             if (StatusRequest.CONFIRMED.equals(request.getStatus()))
                 result.computeIfAbsent("confirmedRequests", key -> new LinkedList<>())
-                        .add(requestMapper.toDto(request));
+                        .add(request);
             else
                 result.computeIfAbsent("rejectedRequests", key -> new LinkedList<>())
-                        .add(requestMapper.toDto(request));
+                        .add(request);
         }
         log.info("Результат обновления заявок {}", result);
         return result;

@@ -1,8 +1,8 @@
 package ru.practicum.mainservice.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.mainservice.dto.request.RequestDTO;
 import ru.practicum.mainservice.model.Request;
+import ru.practicum.mainservice.dto.request.RequestDTO;
 
 @Component
 public class RequestMapper {

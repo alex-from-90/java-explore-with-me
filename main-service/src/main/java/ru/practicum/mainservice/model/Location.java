@@ -18,7 +18,7 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "lat", nullable = false)
     private double lat;

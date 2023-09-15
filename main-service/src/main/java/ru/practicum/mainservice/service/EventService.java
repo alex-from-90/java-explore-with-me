@@ -1,36 +1,41 @@
 package ru.practicum.mainservice.service;
 
-import ru.practicum.mainservice.enums.UpdateEventState;
-import ru.practicum.mainservice.model.AdminEventFilter;
+import ru.practicum.mainservice.dto.event.CreateEventDTO;
+import ru.practicum.mainservice.dto.event.EventDTO;
+import ru.practicum.mainservice.dto.event.ShortEventDTO;
+import ru.practicum.mainservice.dto.event.UpdateEventDTO;
+import ru.practicum.mainservice.dto.filter.AdminEventFilterDTO;
+import ru.practicum.mainservice.dto.filter.EventFilterDTO;
 import ru.practicum.mainservice.model.Event;
-import ru.practicum.mainservice.model.EventFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 public interface EventService {
-    Event getById(int eventId);
+    Event getEventById(int eventId);
 
-    Event createEvent(int userId, int categoryId, Event event);
+    EventDTO createEvent(int userId, CreateEventDTO dto);
 
-    Event updateEvent(int userId, Integer categoryId, Event event, UpdateEventState state);
+    EventDTO updateEvent(int userId, int eventId, UpdateEventDTO dto);
 
-    Event updateAdminEvent(Integer categoryId, Event event, UpdateEventState state);
+    EventDTO updateAdminEvent(int eventId, UpdateEventDTO dto);
 
-    void updateEvent(Event fromDB, Event event, Integer categoryId);
+    void updateEvent(Event fromDB, UpdateEventDTO dto);
 
-    List<Event> getAll(int userId, int from, int size);
+    List<ShortEventDTO> getAll(int userId, int from, int size);
 
-    Event getByInitiatorAndId(int userId, int eventId);
+    EventDTO getByInitiatorAndId(int userId, int eventId);
 
-    Event getPublishedEventById(int eventId);
+    EventDTO getPublishedEventById(int eventId);
 
-    List<Event> findEvents(EventFilter eventFilter);
+    List<ShortEventDTO> findEvents(EventFilterDTO eventFilter);
 
-    List<Event> findEvents(AdminEventFilter eventFilter);
+    List<EventDTO> findEvents(AdminEventFilterDTO eventFilter);
 
-    List<Event> findAllByIds(List<Integer> eventIds);
+    List<EventDTO> findAllByIds(List<Integer> eventIds);
+
+    List<Event> findAllEventByIds(List<Integer> eventIds);
 
     void addStatistic(HttpServletRequest request);
 

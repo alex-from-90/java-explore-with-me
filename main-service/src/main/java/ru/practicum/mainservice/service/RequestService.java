@@ -1,6 +1,7 @@
 package ru.practicum.mainservice.service;
 
-import ru.practicum.mainservice.enums.StatusRequest;
+import ru.practicum.mainservice.dto.request.RequestDTO;
+import ru.practicum.mainservice.dto.request.UpdateRequestDTO;
 import ru.practicum.mainservice.model.Request;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 public interface RequestService {
     Request getRequestById(int requestId);
 
-    Request createRequest(int userId, int eventId);
+    RequestDTO createRequest(int userId, int eventId);
 
-    List<Request> getUserRequests(int userId);
+    List<RequestDTO> getUserRequests(int userId);
 
-    Request cancelRequest(int userId, int requestId);
+    RequestDTO cancelRequest(int userId, int requestId);
 
-    List<Request> getUserEventRequests(int userId, int eventId);
+    List<RequestDTO> getUserEventRequests(int userId, int eventId);
 
-    List<Request> updateRequests(int userId, int eventId, List<Integer> requestIds, StatusRequest status);
+    List<RequestDTO> updateRequests(int userId, int eventId, UpdateRequestDTO dto);
 }

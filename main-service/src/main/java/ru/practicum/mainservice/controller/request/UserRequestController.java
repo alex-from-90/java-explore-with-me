@@ -6,14 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainservice.dto.request.RequestDTO;
-import ru.practicum.mainservice.mapper.RequestMapper;
-import ru.practicum.mainservice.model.Request;
 import ru.practicum.mainservice.service.RequestService;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.websocket.server.PathParam;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -24,14 +21,13 @@ import java.util.stream.Collectors;
 public class UserRequestController {
 
     private final RequestService requestService;
-    private final RequestMapper requestMapper;
 
     @GetMapping
     public List<RequestDTO> getUserRequests(@PathVariable @PositiveOrZero int userId) {
         log.info("Запрос на получение заявок пользователя userId={}", userId);
-        List<Request> requests = requestService.getUserRequests(userId);
+        List<RequestDTO> requests = requestService.getUserRequests(userId);
         log.info("Найдено {} заявок для пользователя userId={}", requests.size(), userId);
-        return requests.stream().map(requestMapper::toDto).collect(Collectors.toList());
+        return requests;
     }
 
     @PostMapping
@@ -41,9 +37,9 @@ public class UserRequestController {
             @PathParam(value = "eventId") @PositiveOrZero int eventId
     ) {
         log.info("Запрос на создание заявки на участие в событии userId={}, eventId={}", userId, eventId);
-        Request request = requestService.createRequest(userId, eventId);
+        RequestDTO request = requestService.createRequest(userId, eventId);
         log.info("Заявка на участие в событии userId={}, eventId={}, request={}", userId, eventId, request);
-        return requestMapper.toDto(request);
+        return request;
     }
 
     @PatchMapping("/{requestId}/cancel")
@@ -52,8 +48,8 @@ public class UserRequestController {
             @PathVariable @PositiveOrZero int requestId
     ) {
         log.info("Запрос на отмену заявки userId={}, requestId={}", userId, requestId);
-        Request request = requestService.cancelRequest(userId, requestId);
+        RequestDTO request = requestService.cancelRequest(userId, requestId);
         log.info("Запрос на участие отменен userId={}, requestId={}, request={}", userId, requestId, request);
-        return requestMapper.toDto(request);
+        return request;
     }
 }

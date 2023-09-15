@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainservice.dto.compilation.CompilationDTO;
 import ru.practicum.mainservice.dto.compilation.CreateCompilationDTO;
 import ru.practicum.mainservice.dto.compilation.UpdateCompilationDTO;
-import ru.practicum.mainservice.mapper.CompilationMapper;
-import ru.practicum.mainservice.model.Compilation;
 import ru.practicum.mainservice.service.CompilationService;
 
 import javax.validation.Valid;
@@ -24,16 +22,14 @@ import javax.validation.constraints.PositiveOrZero;
 public class AdminCompilationController {
 
     private final CompilationService compilationService;
-    private final CompilationMapper compilationMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDTO createCompilation(@RequestBody @Valid CreateCompilationDTO dto) {
         log.info("Получен запрос на создание подборки data={}", dto);
-        Compilation compilation = compilationMapper.fromDto(dto);
-        compilation = compilationService.createCompilation(dto.getEvents(), compilation);
+        CompilationDTO compilation = compilationService.createCompilation(dto);
         log.info("Подборка успешно создана data={}", compilation);
-        return compilationMapper.toDto(compilation);
+        return compilation;
     }
 
     @DeleteMapping("/{compilationId}")
@@ -48,9 +44,8 @@ public class AdminCompilationController {
             @RequestBody(required = false) @Valid UpdateCompilationDTO dto
     ) {
         log.info("Получен запрос на изменение подборки data={}", dto);
-        Compilation compilation = compilationMapper.fromDto(dto);
-        compilation = compilationService.updateCompilation(compId, dto.getEvents(), compilation);
+        CompilationDTO compilation = compilationService.updateCompilation(compId, dto);
         log.info("Подборка успешно изменена data={}", compilation);
-        return compilationMapper.toDto(compilation);
+        return compilation;
     }
 }

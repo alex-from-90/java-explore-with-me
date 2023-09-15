@@ -16,8 +16,7 @@ public class CreateCompilationDTO {
     @UniqueElements
     private List<Integer> events = Collections.emptyList();
     private Boolean pinned = false;
-    @NotNull
-    @NotBlank
+    @NotNull @NotBlank
     @Size(min = 1, max = 50)
     private String title;
 }

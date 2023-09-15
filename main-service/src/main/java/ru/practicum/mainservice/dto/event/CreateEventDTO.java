@@ -13,14 +13,12 @@ import java.time.LocalDateTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateEventDTO {
-    @NotNull
-    @NotBlank
+    @NotNull @NotBlank
     @Size(min = 20, max = 2000)
     private String annotation;
     @NotNull
     private Integer category;
-    @NotNull
-    @NotBlank
+    @NotNull @NotBlank
     @Size(min = 20, max = 7000)
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

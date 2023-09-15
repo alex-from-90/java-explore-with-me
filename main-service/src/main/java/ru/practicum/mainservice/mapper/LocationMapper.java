@@ -1,8 +1,8 @@
 package ru.practicum.mainservice.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.mainservice.dto.location.CreateLocationDTO;
 import ru.practicum.mainservice.dto.location.LocationDTO;
+import ru.practicum.mainservice.dto.location.CreateLocationDTO;
 import ru.practicum.mainservice.model.Location;
 
 @Component

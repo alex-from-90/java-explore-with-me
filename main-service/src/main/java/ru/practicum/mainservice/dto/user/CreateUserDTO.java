@@ -10,12 +10,10 @@ import javax.validation.constraints.Size;
 @Data
 public class CreateUserDTO {
     @Email
-    @NotNull
-    @NotBlank
+    @NotNull @NotBlank
     @Size(min = 6, max = 254)
     private String email;
-    @NotNull
-    @NotBlank
+    @NotNull @NotBlank
     @Size(min = 2, max = 250)
     private String name;
 }

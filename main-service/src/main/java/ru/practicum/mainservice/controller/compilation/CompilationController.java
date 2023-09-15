@@ -6,14 +6,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.mainservice.dto.compilation.CompilationDTO;
 import ru.practicum.mainservice.dto.filter.PageFilterDTO;
-import ru.practicum.mainservice.mapper.CompilationMapper;
-import ru.practicum.mainservice.model.Compilation;
 import ru.practicum.mainservice.service.CompilationService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -23,7 +20,6 @@ import java.util.stream.Collectors;
 @Validated
 public class CompilationController {
     private final CompilationService compilationService;
-    private final CompilationMapper compilationMapper;
 
     @GetMapping
     public List<CompilationDTO> getCompilations(
@@ -31,20 +27,20 @@ public class CompilationController {
             @RequestParam(required = false) Boolean pinned
     ) {
         log.info("Запрос на список подборок pinned={} page={}", pinned, pageFilter);
-        List<Compilation> compilations = compilationService.getCompilations(
+        List<CompilationDTO> compilations = compilationService.getCompilations(
                 pinned,
                 pageFilter.getFrom(),
                 pageFilter.getSize()
         );
         log.info("Найдено подборок {}", compilations.size());
-        return compilations.stream().map(compilationMapper::toDto).collect(Collectors.toList());
+        return compilations;
     }
 
     @GetMapping("/{compId}")
     public CompilationDTO getCompilationById(@PathVariable @PositiveOrZero int compId) {
         log.info("Запрос на получение подборки compId={}", compId);
-        Compilation compilation = compilationService.getCompilationById(compId);
+        CompilationDTO compilation = compilationService.getCompilationById(compId);
         log.info("Найдена подборка {}", compilation);
-        return compilationMapper.toDto(compilation);
+        return compilation;
     }
 }
