@@ -44,7 +44,8 @@ public class ClientStatistic {
                 LocalDateTime.now().format(DF)
         );
         log.info("send /hit to dto={}", hitDto);
-        makeAndSendRequest(HttpMethod.POST, "/hit", null, hitDto, new ParameterizedTypeReference<Object>() {});
+        makeAndSendRequest(HttpMethod.POST, "/hit", null, hitDto, new ParameterizedTypeReference<Object>() {
+        });
     }
 
     public ResponseEntity<List<StatDTO>> getStats(String start, String end, List<String> uris, Boolean unique) {
@@ -64,7 +65,8 @@ public class ClientStatistic {
                 "/stats?start={start}&end={end}&uris={uris}&unique={unique}",
                 parameters,
                 null,
-                new ParameterizedTypeReference<List<StatDTO>>() {});
+                new ParameterizedTypeReference<List<StatDTO>>() {
+                });
     }
 
     private <T, R> ResponseEntity<R> makeAndSendRequest(HttpMethod method, String path, Map<String, Object> parameters, T body, ParameterizedTypeReference<R> typeReference) {
