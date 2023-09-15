@@ -6,13 +6,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.EndpointHitDto;
+import ru.practicum.ViewStatsDto;
 import ru.practicum.service.StatsService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-
-import ru.practicum.ViewStatsDto;
 
 @Slf4j
 @RestController
@@ -32,7 +32,7 @@ public class StatsController {
                                        @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                        @RequestParam(name = "uris", required = false) String[] uris,
                                        @RequestParam(name = "unique", defaultValue = "false") Boolean unique) {
-        log.info("Получен get запрос на получение статистики по посещениям с {} по {}", start, end);
+        log.info("Получен get запрос на получение статистики по посещениям с {} по {} {} uris={}", start, end, uris.length, Arrays.toString(uris));
         return statsService.getStats(start, end, uris, unique);
     }
 }

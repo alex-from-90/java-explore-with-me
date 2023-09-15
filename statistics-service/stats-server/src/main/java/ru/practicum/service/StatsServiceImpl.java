@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.ViewStatsDto;
 import ru.practicum.exception.BadRequestException;
-import ru.practicum.model.EndpointHit;
 import ru.practicum.mapper.EndpointHitMapper;
-import ru.practicum.model.ViewStats;
 import ru.practicum.mapper.ViewStatsMapper;
+import ru.practicum.model.EndpointHit;
+import ru.practicum.model.ViewStats;
 import ru.practicum.repository.EndpointHitsRepository;
 
 import java.time.LocalDateTime;
@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StatsServiceImpl implements StatsService {
-    private final EndpointHitsRepository endpointHitsRepository;
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final EndpointHitsRepository endpointHitsRepository;
 
     @Override
     @Transactional
