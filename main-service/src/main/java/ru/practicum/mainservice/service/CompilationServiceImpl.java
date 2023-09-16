@@ -48,6 +48,8 @@ public class CompilationServiceImpl implements CompilationService {
         return compilationMapper.toDto(compilation);
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public Compilation getById(int compilationId) {
         return compilationRepository.findById(compilationId)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, String.format(
@@ -75,6 +77,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CompilationDTO> getCompilations(Boolean pinned, int from, int size) {
         Pageable pageable = new OffsetBasedPageRequest(from, size);
         List<Compilation> res;

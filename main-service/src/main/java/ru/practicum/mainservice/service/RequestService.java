@@ -2,6 +2,7 @@ package ru.practicum.mainservice.service;
 
 import ru.practicum.mainservice.dto.request.RequestDTO;
 import ru.practicum.mainservice.dto.request.UpdateRequestDTO;
+import ru.practicum.mainservice.dto.request.UpdateRequestResultDTO;
 import ru.practicum.mainservice.model.Request;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface RequestService {
 
     List<RequestDTO> getUserEventRequests(int userId, int eventId);
 
-    List<RequestDTO> updateRequests(int userId, int eventId, UpdateRequestDTO dto);
+    UpdateRequestResultDTO updateRequests(int userId, int eventId, UpdateRequestDTO dto);
 }

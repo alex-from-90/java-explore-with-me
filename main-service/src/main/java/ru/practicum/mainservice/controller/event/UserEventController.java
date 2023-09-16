@@ -12,16 +12,13 @@ import ru.practicum.mainservice.dto.event.UpdateEventDTO;
 import ru.practicum.mainservice.dto.filter.PageFilterDTO;
 import ru.practicum.mainservice.dto.request.RequestDTO;
 import ru.practicum.mainservice.dto.request.UpdateRequestDTO;
-import ru.practicum.mainservice.enums.StatusRequest;
+import ru.practicum.mainservice.dto.request.UpdateRequestResultDTO;
 import ru.practicum.mainservice.service.EventService;
 import ru.practicum.mainservice.service.RequestService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -83,22 +80,13 @@ public class UserEventController {
     }
 
     @PatchMapping("/{eventId}/requests")
-    public Map<String, List<RequestDTO>> updateEventRequests(
+    public UpdateRequestResultDTO updateEventRequests(
             @PathVariable @PositiveOrZero int userId,
             @PathVariable @PositiveOrZero int eventId,
             @RequestBody @Valid UpdateRequestDTO dto
     ) {
         log.info("Получен запрос на обновление заявок userId={}, eventId={}, data={}", userId, eventId, dto);
-        List<RequestDTO> requests = requestService.updateRequests(userId, eventId, dto);
-        Map<String, List<RequestDTO>> result = new HashMap<>(4);
-        for (RequestDTO request : requests) {
-            if (StatusRequest.CONFIRMED.equals(request.getStatus()))
-                result.computeIfAbsent("confirmedRequests", key -> new LinkedList<>())
-                        .add(request);
-            else
-                result.computeIfAbsent("rejectedRequests", key -> new LinkedList<>())
-                        .add(request);
-        }
+        UpdateRequestResultDTO result = requestService.updateRequests(userId, eventId, dto);
         log.info("Результат обновления заявок {}", result);
         return result;
     }
