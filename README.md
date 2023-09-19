@@ -1,6 +1,7 @@
 # java-explore-with-me
 Template repository for ExploreWithMe project.
-## Links: https://github.com/alex-from-90/java-explore-with-me/pull/6
+Links: https://github.com/alex-from-90/java-explore-with-me/pull/6
+
 [https://github.com/alex-from-90/java-explore-with-me/pull/6](https://github.com/alex-from-90/java-explore-with-me/pull/6)
 
 ## Postman Tests
