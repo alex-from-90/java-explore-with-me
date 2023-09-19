@@ -1,5 +1,6 @@
 # java-explore-with-me
-Template repository for ExploreWithMe project.
+Template repository for ExploreWithMe project.<br>
+Links: https://github.com/alex-from-90/java-explore-with-me/pull/6
 
 [https://github.com/alex-from-90/java-explore-with-me/pull/6](https://github.com/alex-from-90/java-explore-with-me/pull/6)
 

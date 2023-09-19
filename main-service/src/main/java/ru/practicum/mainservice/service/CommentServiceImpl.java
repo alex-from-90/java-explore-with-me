@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.mainservice.dto.comment.CommentDTO;
 import ru.practicum.mainservice.dto.comment.CreateCommentDTO;
+import ru.practicum.mainservice.dto.filter.PageFilterDTO;
 import ru.practicum.mainservice.enums.EventState;
 import ru.practicum.mainservice.exception.APIException;
 import ru.practicum.mainservice.mapper.CommentMapper;
@@ -102,6 +103,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentDTO editCommentAdmin(Integer commentId, CreateCommentDTO dto) {
         Comment commentFromDB = getCommentById(commentId);
         commentFromDB.setText(dto.getText());
@@ -109,15 +111,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteCommentAdmin(Integer commentId) {
         Comment comment = getCommentById(commentId);
         commentRepository.delete(comment);
     }
 
     @Override
-    public List<CommentDTO> getAllCommentsByEvent(Integer eventId, Integer from, Integer size) {
+    @Transactional(readOnly = true)
+    public List<CommentDTO> getAllCommentsByEvent(Integer eventId, PageFilterDTO pageFilter) {
         Event event = eventService.getEventById(eventId);
-        Pageable pageable = new OffsetBasedPageRequest(from, size);
+        Pageable pageable = new OffsetBasedPageRequest(pageFilter.getFrom(), pageFilter.getSize());
         return commentRepository.findAllByEvent(event, pageable).stream().map(commentMapper::toDto)
                 .collect(Collectors.toList());
     }

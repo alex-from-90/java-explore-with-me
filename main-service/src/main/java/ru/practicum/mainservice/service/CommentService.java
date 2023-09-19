@@ -2,6 +2,7 @@ package ru.practicum.mainservice.service;
 
 import ru.practicum.mainservice.dto.comment.CommentDTO;
 import ru.practicum.mainservice.dto.comment.CreateCommentDTO;
+import ru.practicum.mainservice.dto.filter.PageFilterDTO;
 import ru.practicum.mainservice.model.Comment;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public interface CommentService {
 
     void deleteCommentAdmin(Integer commentId);
 
-    List<CommentDTO> getAllCommentsByEvent(Integer eventId, Integer from, Integer size);
+    List<CommentDTO> getAllCommentsByEvent(Integer eventId, PageFilterDTO pageFilter);
 }

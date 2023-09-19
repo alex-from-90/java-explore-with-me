@@ -30,6 +30,6 @@ public class CommentController {
             @Valid PageFilterDTO pageFilter
     ) {
         log.info("Запрос на получение всех комментариев о событии eventId={}", eventId);
-        return commentService.getAllCommentsByEvent(eventId, pageFilter.getFrom(), pageFilter.getSize());
+        return commentService.getAllCommentsByEvent(eventId, pageFilter);
     }
 }
