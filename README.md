@@ -1,6 +1,9 @@
 # java-explore-with-me
 
 Template repository for ExploreWithMe project.
+Links: https://github.com/alex-from-90/java-explore-with-me/pull/6
+
+[https://github.com/alex-from-90/java-explore-with-me/pull/6](https://github.com/alex-from-90/java-explore-with-me/pull/6)
 
 ## Postman Tests
 
@@ -8,6 +11,7 @@ Template repository for ExploreWithMe project.
 |:-----------------:|:--------------:|:----------------------------------:|
 |   Main Service    |   230 / 230    | ![](https://geps.dev/progress/100) |
 | Statistic Service |    18 / 18     | ![](https://geps.dev/progress/100) |
+| Feature Comments  |    41 / 41     | ![](https://geps.dev/progress/100) |
 
 ## Endpoints
 
